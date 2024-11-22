@@ -6,7 +6,7 @@ use App\Models\{Genre, Song, User};
 use App\Http\Requests\StoreSongRequest;
 use App\Http\Requests\UpdateSongRequest;
 use Auth;
-use Request;
+use Illuminate\Http\Request;
 
 class SongController extends Controller
 {
@@ -23,11 +23,25 @@ class SongController extends Controller
      */
     public function create(Request $request)
     {
-        $song = Song::create([
-            'title' => $request->title,
-            'user_id' => Auth::id(),
-            'genre_id' => $request->genre_id
+        $request->validate([
+            'title' => 'required|string',
+            'genre_id' => 'required|integer|exists:genres,id',
+            'file' => 'nullable|file',
         ]);
+
+        $songData = [
+            'title' => $request->title,
+            'genre_id' => $request->genre_id,
+            'user_id' => Auth::id(),
+        ];
+
+        if ($request->hasFile('file')) {
+            $songData['image'] = $request->file('file')->store('songs');
+        }
+
+        $song = Song::create($songData);
+
+        return response()->json(['redirect' => '/']);
     }
 
     /**

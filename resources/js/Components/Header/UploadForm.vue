@@ -3,6 +3,8 @@
 
     const files = ref([]);
     const error = ref('');
+    const uploadSuccess = ref(false);
+    const uploadError = ref('');
 
     const props = defineProps({
         genres: {
@@ -27,21 +29,48 @@
             error.value = '';
         }
     };
+
+    const title = ref('')
+    const selectedGenre = ref('')
+
+    const upload_song = async () => {
+        const formData = new FormData();
+        formData.append('title', title.value);
+        formData.append('genre_id', selectedGenre.value);
+        if (files.value.length > 0) {
+            formData.append('file', files.value[0]);
+        }
+
+        try {
+            const response = await axios.post(route('song_upload'), formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            console.log('Song uploaded successfully:', response.data);
+            uploadSuccess.value = true;
+            uploadError.value = '';
+        } catch (error) {
+            console.error('Error uploading song:', error);
+            uploadSuccess.value = false;
+            uploadError.value = 'Error uploading song. Please try again.';
+        }
+    }
 </script>
 
 <template>
-    <form class="flex flex-col gap-5">
+    <form @submit.prevent="upload_song" enctype="multipart/form-data" method="POST" class="flex flex-col gap-5">
         <div class="flex flex-col gap-2">
             <label class="dark:text-white/80">
                 Название трека
             </label>
-            <input type="text" class="w-full rounded-md border-gray-300 shadow-sm focus:ring-2 focus:!border-red-400 focus:ring-red-400 transition-all dark:bg-stone-800 dark:text-white dark:border-gray-600">
+            <input v-model="title" type="text" class="w-full rounded-md border-gray-300 shadow-sm focus:ring-2 focus:!border-red-400 focus:ring-red-400 transition-all dark:bg-stone-800 dark:text-white dark:border-gray-600">
         </div>
         <div class="flex flex-col gap-2">
             <label class="dark:text-white/80">
                 Жанр
             </label>
-            <select id="countries" class="bg-gray-50 border transition-all border-gray-300 text-gray-900 text-sm rounded-md focus:ring-2 focus:ring-red-400 focus:!border-red-400 block w-full p-2.5 dark:bg-stone-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+            <select v-model="selectedGenre" id="countries" class="bg-gray-50 border transition-all border-gray-300 text-gray-900 text-sm rounded-md focus:ring-2 focus:ring-red-400 focus:!border-red-400 block w-full p-2.5 dark:bg-stone-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                 <option selected>Выберите жанр</option>
                 <option :value="genre.id" v-for="genre in $page.props.genres" :key="genre.id">{{ genre.title }}</option>
             </select>

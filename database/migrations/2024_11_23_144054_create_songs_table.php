@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('songs', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('artist');
-            $table->string('image');
+            $table->string('image')->default(null)->nullable();
+            $table->unsignedBigInteger('genre_id')->default(1);
+            $table->unsignedBigInteger('user_id')->default(1);
             $table->timestamps();
+            $table->foreign('genre_id')->references('id')->on('genres')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -28,4 +28,8 @@ Route::controller(App\Http\Controllers\HomeController::class)->group(function() 
     Route::get('/', 'index')->name('home');
 });
 
+Route::controller(App\Http\Controllers\SongController::class)->group(function() {
+    Route::post('/song/new', 'create')->name('song_upload');
+});
+
 require __DIR__.'/auth.php';
