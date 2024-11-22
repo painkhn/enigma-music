@@ -26,7 +26,7 @@
 <template>
     <Head title="ENIGMA MUSIC" />
 
-    <div class="max-w-7xl w-full mx-auto my-0 p-10 dark:bg-stone-950 border-x-2 dark:border-stone-800 border-gray-200 bg-stone-100">
+    <div class="max-w-7xl w-full min-h-screen mx-auto my-0 p-10 dark:bg-stone-950 border-x-2 dark:border-stone-800 border-gray-200 bg-stone-100">
         <Header 
             :canLogin="props.canLogin"
             :canRegister="props.canRegister"
