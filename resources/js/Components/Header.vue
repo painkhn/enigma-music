@@ -14,6 +14,9 @@
         },
         user: {
             type: Object,
+        },
+        genres: {
+            type: Array
         }
     });
 </script>
@@ -47,7 +50,7 @@
                         </div>
                         <!-- Modal body -->
                         <div class="p-4 md:p-5 space-y-4">
-                            <UploadForm />
+                            <UploadForm :genres="props.genres" />
                         </div>
                     </div>
                 </div>

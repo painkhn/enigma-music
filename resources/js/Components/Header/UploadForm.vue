@@ -4,6 +4,12 @@
     const files = ref([]);
     const error = ref('');
 
+    const props = defineProps({
+        genres: {
+            type: Array
+        }
+    })
+
     const handleDrop = (event) => {
         files.value = Array.from(event.dataTransfer.files);
         if (files.value.length === 0) {
@@ -37,10 +43,7 @@
             </label>
             <select id="countries" class="bg-gray-50 border transition-all border-gray-300 text-gray-900 text-sm rounded-md focus:ring-2 focus:ring-red-400 focus:!border-red-400 block w-full p-2.5 dark:bg-stone-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                 <option selected>Выберите жанр</option>
-                <option value="US">United States</option>
-                <option value="CA">Canada</option>
-                <option value="FR">France</option>
-                <option value="DE">Germany</option>
+                <option :value="genre.id" v-for="genre in $page.props.genres" :key="genre.id">{{ genre.title }}</option>
             </select>
         </div>
         <div class="flex flex-col gap-2">

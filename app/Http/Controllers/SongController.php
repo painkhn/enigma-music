@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Song;
+use App\Models\{Genre, Song, User};
 use App\Http\Requests\StoreSongRequest;
 use App\Http\Requests\UpdateSongRequest;
+use Auth;
+use Request;
 
 class SongController extends Controller
 {
@@ -19,9 +21,13 @@ class SongController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $song = Song::create([
+            'title' => $request->title,
+            'user_id' => Auth::id(),
+            'genre_id' => $request->genre_id
+        ]);
     }
 
     /**
