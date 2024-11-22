@@ -97,7 +97,7 @@ const submit = () => {
                         Forgot your password?
                     </Link> -->
 
-                    <Link class="transition-all rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-white dark:hover:text-red-400">
+                    <Link :href="route('register')" class="transition-all rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-white dark:hover:text-red-400">
                         Создать аккаунт
                     </Link>
         
